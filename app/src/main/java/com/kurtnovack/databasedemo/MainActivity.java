@@ -14,52 +14,38 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         try {
-            SQLiteDatabase newDatabase = this.openOrCreateDatabase("Events", MODE_PRIVATE, null);
+            SQLiteDatabase myDatabase = this.openOrCreateDatabase("Users", MODE_PRIVATE, null);
 
-            newDatabase.execSQL("CREATE TABLE IF NOT EXISTS events (title VARCHAR, date VARCHAR)");
+            myDatabase.execSQL("CREATE TABLE IF NOT EXISTS newUsers (name VARCHAR, age INTEGER(3), id INTEGER PRIMARY KEY)");
 
-            newDatabase.execSQL("INSERT INTO events (title, date) VALUES ('birth', 'December 14, 1988')");
-            newDatabase.execSQL("INSERT INTO events (title, date) VALUES ('today', 'October 30, 2015')");
+//            myDatabase.execSQL("CREATE TABLE IF NOT EXISTS users (name VARCHAR, age INT(3))");
 
-            Cursor c = newDatabase.rawQuery("SELECT * FROM events", null);
+            myDatabase.execSQL("INSERT INTO newUsers (name, age) VALUES ('Rob', 34)");
+            myDatabase.execSQL("INSERT INTO newUsers (name, age) VALUES ('Kurt', 26)");
+//            myDatabase.execSQL("INSERT INTO users (name, age) VALUES ('John', 32)");
+//            myDatabase.execSQL("INSERT INTO users (name, age) VALUES ('Jane', 41)");
 
-            int titleIndex = c.getColumnIndex("title");
-            int dateIndex = c.getColumnIndex("date");
+//            myDatabase.execSQL("UPDATE users SET age = 27 WHERE name = 'Kurt'");
+//            myDatabase.execSQL("DELETE FROM users WHERE name = 'Jane'");
+            myDatabase.execSQL("DELETE FROM newUsers WHERE id = 1");
+
+            Cursor c = myDatabase.rawQuery("SELECT * FROM newUsers", null);
+
+            int nameIndex = c.getColumnIndex("name");
+            int ageIndex = c.getColumnIndex("age");
+            int idIndex = c.getColumnIndex("id");
 
             c.moveToFirst();
             while (c != null) {
-                Log.i("title", c.getString(titleIndex));
-                Log.i("date", c.getString(dateIndex));
+                Log.i("name", c.getString(nameIndex));
+                Log.i("age", Integer.toString(c.getInt(ageIndex)));
+                Log.i("id", Integer.toString(c.getInt(idIndex)));
 
                 c.moveToNext();
             }
+
         } catch (Exception e) {
             e.printStackTrace();
         }
-
-//        try {
-//            SQLiteDatabase myDatabase = this.openOrCreateDatabase("Users", MODE_PRIVATE, null);
-//
-//            myDatabase.execSQL("CREATE TABLE IF NOT EXISTS users (name VARCHAR, age INT(3))");
-//
-//            myDatabase.execSQL("INSERT INTO users (name, age) VALUES ('Rob', 34)");
-//            myDatabase.execSQL("INSERT INTO users (name, age) VALUES ('Kurt', 26)");
-//
-//            Cursor c = myDatabase.rawQuery("SELECT * FROM users", null);
-//
-//            int nameIndex = c.getColumnIndex("name");
-//            int ageIndex = c.getColumnIndex("age");
-//
-//            c.moveToFirst();
-//            while (c != null) {
-//                Log.i("name", c.getString(nameIndex));
-//                Log.i("age", Integer.toString(c.getInt(ageIndex)));
-//
-//                c.moveToNext();
-//            }
-//
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
     }
 }
